@@ -1,0 +1,7 @@
+alias ll='ls -lAh'
+alias bc='bc -ql'
+alias pg=less
+
+PS1=$(echo $PS1 | sed -e 's,\\$$, & ,')
+source /etc/default/locale
+cd

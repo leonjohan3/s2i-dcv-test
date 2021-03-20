@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Treat unset variables as an error when performing parameter expansion
+# and exit immediately if a simple command exits with a non-zero status.
+# Returns the exit value of the last (rightmost) command to exit with
+# non-zero in a pipeline of commands.
+set -ue -o pipefail
+
+# This script runs the application. See http://smarden.org/runit/runsv.8.html
+
+# Some notes on bash scripting:
+# Variables flagged as local readonly will not terminate the script if they are set by command substitution.
+
+exec /usr/bin/runsv $HOME/service

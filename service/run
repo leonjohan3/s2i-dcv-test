@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Treat unset variables as an error when performing parameter expansion
+# and exit immediately if a simple command exits with a non-zero status.
+# Returns the exit value of the last (rightmost) command to exit with
+# non-zero in a pipeline of commands.
+set -ue -o pipefail
+
+# This script starts Wiremock Standalone
+
+# Some notes on bash scripting:
+# Variables flagged as local readonly will not terminate the script if they are set by command substitution.
+
+APACHE_CONFDIR=$HOME/etc/apache2
+APACHE_ENVVARS="$APACHE_CONFDIR/envvars"
+
+if test -f $APACHE_ENVVARS; then
+  . $APACHE_ENVVARS
+fi
+
+exec /usr/sbin/apache2 -d "$APACHE_CONFDIR" "$APACHE_ARGUMENTS"

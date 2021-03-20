@@ -1,0 +1,6 @@
+.s2iignore
+.gitignore
+.git
+Makefile
+README.md
+dot_bash_aliases

@@ -1,0 +1,10 @@
+README.md
+.emacs.desktop
+.emacs.desktop.lock
+.s2iignore
+.s2i
+Makefile
+README.md
+.git
+.gitignore
+assetinfo.json

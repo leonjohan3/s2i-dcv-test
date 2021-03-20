@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Treat unset variables as an error when performing parameter expansion
+# and exit immediately if a simple command exits with a non-zero status.
+# Returns the exit value of the last (rightmost) command to exit with
+# non-zero in a pipeline of commands.
+set -ue -o pipefail
+
+# This assembles the s2i/sti image, see https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
+
+# Some notes on bash scripting:
+# Variables flagged as local readonly will not terminate the script if they are set by command substitution.
+
+function log {
+    if [ $DEBUG_LOGGING -eq 1 ] ; then
+        NOW=$(date "+%H:%M:%S")
+        echo "$NOW $1"
+    fi
+}
+set +x
+readonly DEBUG_LOGGING=1
+
+log "Running the assemble script..."
+
+mv $TMPDIR/src/var $TMPDIR/src/etc $TMPDIR/src/service $HOME
+rm -rf $TMPDIR/src
+chmod -R go-rwx $HOME
