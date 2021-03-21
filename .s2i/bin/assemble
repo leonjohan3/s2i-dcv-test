@@ -24,4 +24,23 @@ log "Running the assemble script..."
 
 mv $TMPDIR/src/var $TMPDIR/src/etc $TMPDIR/src/service $HOME
 rm -rf $TMPDIR/src
+
+cd $CATALINA_BASE
+ln -s ../../../etc/tomcat9 conf
+ln -s ../../log/tomcat9 logs
+ln -s ../../cache/tomcat9 work
+
+# s2i does not handle links
+# empty files are created in the *-enabled folders that are converted to links in the assemble step
+for DI in conf mods sites ; do
+    cd $HOME/etc/apache2/${DI}-enabled
+
+    for FI in * ; do
+        if [ ! -s $FI ] ; then
+            rm $FI
+            ln -s ../${DI}-available/$FI
+        fi
+    done
+done
+
 chmod -R go-rwx $HOME

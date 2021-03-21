@@ -23,6 +23,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && rm -r /usr/share/doc
 
 RUN export DEBIAN_FRONTEND=noninteractive && apt-get -y update && apt-get -y install less tree apache2
+RUN export DEBIAN_FRONTEND=noninteractive && apt-get -y update && apt-get -y install tomcat9
 
 ENV LANG=en_AU.UTF-8
 ARG APP_HOME=/opt/app-root/src

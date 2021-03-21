@@ -4,7 +4,8 @@
 # and exit immediately if a simple command exits with a non-zero status.
 # Returns the exit value of the last (rightmost) command to exit with
 # non-zero in a pipeline of commands.
-set -ue -o pipefail
+#set -ue -o pipefail
+set -e -o pipefail
 
 # This script starts Wiremock Standalone
 
@@ -14,8 +15,80 @@ set -ue -o pipefail
 APACHE_CONFDIR=$HOME/etc/apache2
 APACHE_ENVVARS="$APACHE_CONFDIR/envvars"
 
-if test -f $APACHE_ENVVARS; then
+if test -r $APACHE_ENVVARS; then
   . $APACHE_ENVVARS
 fi
 
-exec /usr/sbin/apache2 -d "$APACHE_CONFDIR" "$APACHE_ARGUMENTS"
+#exec /usr/sbin/apache2 -d "$APACHE_CONFDIR" "$APACHE_ARGUMENTS"
+
+JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+CATALINA_HOME=/usr/share/tomcat9
+CATALINA_TMPDIR=$TMPDIR
+JAVA_OPTS="-Djava.awt.headless=true"
+CATALINA_OPTS=""
+
+# Ensure that any user defined CLASSPATH variables are not used on startup,
+# but allow them to be specified in setenv.sh, in rare case when it is needed.
+CLASSPATH=
+
+if [ -r "$CATALINA_BASE/bin/setenv.sh" ]; then
+  . "$CATALINA_BASE/bin/setenv.sh"
+elif [ -r "$CATALINA_HOME/bin/setenv.sh" ]; then
+  . "$CATALINA_HOME/bin/setenv.sh"
+fi
+
+# Add on extra jar files to CLASSPATH
+if [ ! -z "$CLASSPATH" ] ; then
+  CLASSPATH="$CLASSPATH":
+fi
+CLASSPATH="$CLASSPATH""$CATALINA_HOME"/bin/bootstrap.jar
+CLASSPATH=$CLASSPATH:$CATALINA_HOME/bin/tomcat-juli.jar
+
+CATALINA_OUT="$CATALINA_BASE/logs/catalina.out"
+LOGGING_CONFIG="-Djava.util.logging.config.file=$CATALINA_BASE/conf/logging.properties"
+LOGGING_MANAGER="-Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager"
+UMASK="0027"
+umask $UMASK
+
+# Add the JAVA 9 specific start-up parameters required by Tomcat
+JDK_JAVA_OPTIONS="$JDK_JAVA_OPTIONS --add-opens=java.base/java.lang=ALL-UNNAMED"
+JDK_JAVA_OPTIONS="$JDK_JAVA_OPTIONS --add-opens=java.base/java.io=ALL-UNNAMED"
+JDK_JAVA_OPTIONS="$JDK_JAVA_OPTIONS --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED"
+export JDK_JAVA_OPTIONS
+
+#echo "Using CATALINA_BASE:   $CATALINA_BASE"
+#echo "Using CATALINA_HOME:   $CATALINA_HOME"
+#echo "Using CATALINA_TMPDIR: $CATALINA_TMPDIR"
+#echo "Using JAVA_HOME:       $JAVA_HOME"
+#echo "Using JAVA_OPTS:       $JAVA_OPTS"
+#echo "Using JRE_HOME:        $JRE_HOME"
+#echo "Using CLASSPATH:       $CLASSPATH"
+#echo "Using CATALINA_OUT:       $CATALINA_OUT"
+#echo "Using CATALINA_OPTS:       $CATALINA_OPTS"
+#echo "Using LOGGING_CONFIG:       $LOGGING_CONFIG"
+#echo "Using LOGGING_MANAGER:       $LOGGING_MANAGER"
+#echo "Using JDK_JAVA_OPTIONS:       $JDK_JAVA_OPTIONS"
+
+#echo java "$LOGGING_CONFIG" "$LOGGING_MANAGER" "$JAVA_OPTS" "$CATALINA_OPTS" \
+#      -classpath "$CLASSPATH" \
+#      -Dcatalina.base="$CATALINA_BASE" \
+#      -Dcatalina.home="$CATALINA_HOME" \
+#      -Djava.io.tmpdir="$CATALINA_TMPDIR" \
+#      org.apache.catalina.startup.Bootstrap start
+#env
+cd $CATALINA_HOME
+exec /usr/bin/java "$LOGGING_CONFIG" "$LOGGING_MANAGER" "$JAVA_OPTS" \
+      -classpath "$CLASSPATH" \
+      -Dcatalina.base="$CATALINA_BASE" \
+      -Dcatalina.home="$CATALINA_HOME" \
+      -Djava.io.tmpdir="$CATALINA_TMPDIR" \
+      org.apache.catalina.startup.Bootstrap start
+#      org.apache.catalina.startup.Bootstrap start >> "$CATALINA_OUT" 2>&1 
+
+#/usr/bin/java -classpath "$CLASSPATH" org.apache.catalina.startup.Bootstrap help
+#/usr/bin/java -classpath "$CATALINA_HOME/lib/catalina.jar"  org.apache.catalina.util.ServerInfo
+#/usr/bin/java -classpath "$CATALINA_HOME"/bin/bootstrap.jar:$CATALINA_HOME/bin/tomcat-juli.jar \
+#/usr/bin/java "$LOGGING_CONFIG" "$LOGGING_MANAGER" "$JAVA_OPTS" "$CATALINA_OPTS" \
+#              -classpath "$CLASSPATH" \
+#              -Dcatalina.base="$CATALINA_BASE" \
+#              org.apache.catalina.startup.Bootstrap configtest

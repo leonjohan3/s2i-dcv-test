@@ -9,4 +9,5 @@ build:
 
 .PHONY: deploy
 deploy: build
-	docker run -d --rm --name $(S2I_IMAGE_NAME) -p 8000:8000 $(S2I_IMAGE_NAME)
+	#docker run -d --rm --name $(S2I_IMAGE_NAME) -p 8000:8000 $(S2I_IMAGE_NAME)
+	docker run -d --rm --name $(S2I_IMAGE_NAME) -p 8000:8080 $(S2I_IMAGE_NAME)

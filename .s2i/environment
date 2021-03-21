@@ -1,2 +1,3 @@
-#HOME
 TMPDIR=/tmp
+
+CATALINA_BASE=/opt/app-root/src/var/lib/tomcat9
