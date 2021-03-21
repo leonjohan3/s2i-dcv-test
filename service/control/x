@@ -6,11 +6,12 @@
 # non-zero in a pipeline of commands.
 set -ue -o pipefail
 
-# This script runs the application. See http://smarden.org/runit/runsv.8.html
+# This script shuts down tomcat9 in an orderly fashion. See http://smarden.org/runit/runsv.8.html
 
 # Some notes on bash scripting:
 # Variables flagged as local readonly will not terminate the script if they are set by command substitution.
 
-#/usr/bin/runsv $HOME/services/apache2 &
-exec /usr/bin/runsv $HOME/service
-#exec /usr/bin/runsvdir $HOME/services
+echo "Shutdown apache2 (TODO)"
+echo "Shutdown tomcat9"
+echo SHUTDOWN | /usr/bin/nc localhost 8180
+

@@ -1,4 +1,4 @@
-alias ll='ls -lAh'
+alias ll='ls -lh'
 alias bc='bc -ql'
 alias pg=less
 

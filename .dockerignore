@@ -8,3 +8,8 @@ README.md
 .git
 .gitignore
 assetinfo.json
+etc
+var
+.s2i
+services
+LICENSE
