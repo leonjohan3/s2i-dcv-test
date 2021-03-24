@@ -11,7 +11,7 @@ set -e -o pipefail
 # Some notes on bash scripting:
 # Variables flagged as local readonly will not terminate the script if they are set by command substitution.
 
-umask u=rwx,g=,o=
+umask u=rwx,g=r,o=
 APACHE_CONFDIR=$HOME/etc/apache2
 APACHE_ENVVARS="$APACHE_CONFDIR/envvars"
 

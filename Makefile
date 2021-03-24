@@ -13,5 +13,5 @@ build:
 deploy: build
 	#docker run -d --rm --name $(S2I_IMAGE_NAME) -p 8000:8000 $(S2I_IMAGE_NAME)
 	#docker run -d --rm --name $(S2I_IMAGE_NAME) -p 8000:8080 -v /home/ubuntu/projects/log:/opt/app-root/src/var/log $(S2I_IMAGE_NAME)
-	docker run -d --rm --name $(S2I_IMAGE_NAME) -p 8000:8000 -p 8050:8080 -v /home/ubuntu/projects/log:/opt/app-root/src/var/log $(S2I_IMAGE_NAME)
+	docker run -d --rm --name $(S2I_IMAGE_NAME) -p 80:8000 -v /home/ubuntu/projects/log:/opt/app-root/src/var/log $(S2I_IMAGE_NAME)
 	#docker run -d --rm --name $(S2I_IMAGE_NAME) -p 8000:8080  $(S2I_IMAGE_NAME)

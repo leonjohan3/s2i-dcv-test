@@ -11,7 +11,9 @@ set -ue -o pipefail
 # Some notes on bash scripting:
 # Variables flagged as local readonly will not terminate the script if they are set by command substitution.
 
-echo "Shutdown apache2 (TODO)"
+echo "Shutdown apache2"
+kill -WINCH $(cat $HOME/var/run/apache2/apache2.pid)
+
 echo "Shutdown tomcat9"
 echo SHUTDOWN | /usr/bin/nc localhost 8180
 
