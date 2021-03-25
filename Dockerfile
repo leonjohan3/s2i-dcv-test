@@ -18,20 +18,14 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install apt-utils \
     && apt-get -y upgrade -o Dpkg::Options::="--force-confold" \
     && apt-get -y update \
-    && apt-get -y install locales tzdata default-jre runit curl less tree apache2 tomcat9 \
+    && apt-get -y install locales tzdata default-jre runit curl less tree apache2 tomcat9 libtcnative-1 netcat-openbsd \
     && localedef -i en_AU -c -f UTF-8 -A /usr/share/locale/locale.alias en_AU.UTF-8 \
     && dpkg-reconfigure -f noninteractive tzdata \
     && apt-get -y clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     && rm -r /usr/share/man \
-    && rm -r /usr/share/doc
-
-# move below to above step
-RUN export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y update \
-    && apt-get -y install tomcat9-examples libtcnative-1 netcat-openbsd
-
-RUN unlink /usr/share/tomcat9/lib/tomcat-websocket.jar \
+    && rm -r /usr/share/doc \
+    && unlink /usr/share/tomcat9/lib/tomcat-websocket.jar \
     && unlink /usr/share/tomcat9/lib/websocket-api.jar \
     && unlink /usr/share/tomcat9/lib/tomcat-jdbc.jar \
     && unlink /usr/share/tomcat9/lib/tomcat-dbcp.jar \

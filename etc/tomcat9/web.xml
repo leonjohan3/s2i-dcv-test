@@ -110,7 +110,7 @@
   <!--                       that RFC 7233 clarified that Range headers are -->
   <!--                       only valid for GET requests. [true]            -->
 
-    <servlet>
+    <!--<servlet>
         <servlet-name>default</servlet-name>
         <servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class>
         <init-param>
@@ -122,7 +122,7 @@
             <param-value>false</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
-    </servlet>
+    </servlet>-->
 
 
   <!-- The JSP page compiler and execution servlet, which is the mechanism  -->
@@ -264,7 +264,7 @@
   <!--                       attributes described in JSP.1.6 be applied to  -->
   <!--                       the expression? [true]                         -->
 
-    <servlet>
+    <!--<servlet>
         <servlet-name>jsp</servlet-name>
         <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
         <init-param>
@@ -276,7 +276,7 @@
             <param-value>false</param-value>
         </init-param>
         <load-on-startup>3</load-on-startup>
-    </servlet>
+    </servlet>-->
 
 
   <!-- NOTE: An SSI Filter is also available as an alternative SSI          -->
@@ -432,17 +432,17 @@
   <!-- web.xml deployment descriptor) to enable these services              -->
 
     <!-- The mapping for the default servlet -->
-    <servlet-mapping>
+    <!--<servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>-->
 
     <!-- The mappings for the JSP servlet -->
-    <servlet-mapping>
+    <!--<servlet-mapping>
         <servlet-name>jsp</servlet-name>
         <url-pattern>*.jsp</url-pattern>
         <url-pattern>*.jspx</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>-->
 
     <!-- The mapping for the SSI servlet -->
 <!--
@@ -630,9 +630,9 @@
   <!-- You can set the default session timeout (in minutes) for all newly   -->
   <!-- created sessions by modifying the value below.                       -->
 
-    <session-config>
+    <!--<session-config>
         <session-timeout>30</session-timeout>
-    </session-config>
+    </session-config>-->
 
 
   <!-- ===================== Default MIME Type Mappings =================== -->
@@ -643,7 +643,7 @@
   <!-- deployment descriptor.                                               -->
   <!-- Note: Extensions are always matched in a case-insensitive manner.    -->
 
-    <mime-mapping>
+    <!--<mime-mapping>
         <extension>123</extension>
         <mime-type>application/vnd.lotus-1-2-3</mime-type>
     </mime-mapping>
@@ -2812,17 +2812,14 @@
         <mime-type>application/oda</mime-type>
     </mime-mapping>
     <mime-mapping>
-        <!-- OpenDocument Database -->
         <extension>odb</extension>
         <mime-type>application/vnd.oasis.opendocument.database</mime-type>
     </mime-mapping>
     <mime-mapping>
-        <!-- OpenDocument Chart -->
         <extension>odc</extension>
         <mime-type>application/vnd.oasis.opendocument.chart</mime-type>
     </mime-mapping>
     <mime-mapping>
-        <!-- OpenDocument Formula -->
         <extension>odf</extension>
         <mime-type>application/vnd.oasis.opendocument.formula</mime-type>
     </mime-mapping>
@@ -2831,32 +2828,26 @@
         <mime-type>application/vnd.oasis.opendocument.formula-template</mime-type>
     </mime-mapping>
     <mime-mapping>
-        <!-- OpenDocument Drawing -->
         <extension>odg</extension>
         <mime-type>application/vnd.oasis.opendocument.graphics</mime-type>
     </mime-mapping>
     <mime-mapping>
-        <!-- OpenDocument Image -->
         <extension>odi</extension>
         <mime-type>application/vnd.oasis.opendocument.image</mime-type>
     </mime-mapping>
     <mime-mapping>
-        <!-- OpenDocument Master Document -->
         <extension>odm</extension>
         <mime-type>application/vnd.oasis.opendocument.text-master</mime-type>
     </mime-mapping>
     <mime-mapping>
-        <!-- OpenDocument Presentation -->
         <extension>odp</extension>
         <mime-type>application/vnd.oasis.opendocument.presentation</mime-type>
     </mime-mapping>
     <mime-mapping>
-        <!-- OpenDocument Spreadsheet -->
         <extension>ods</extension>
         <mime-type>application/vnd.oasis.opendocument.spreadsheet</mime-type>
     </mime-mapping>
     <mime-mapping>
-        <!-- OpenDocument Text -->
         <extension>odt</extension>
         <mime-type>application/vnd.oasis.opendocument.text</mime-type>
     </mime-mapping>
@@ -2873,7 +2864,6 @@
         <mime-type>video/ogg</mime-type>
     </mime-mapping>
     <mime-mapping>
-        <!-- xiph mime types -->
         <extension>ogx</extension>
         <mime-type>application/ogg</mime-type>
     </mime-mapping>
@@ -2930,12 +2920,10 @@
         <mime-type>font/otf</mime-type>
     </mime-mapping>
     <mime-mapping>
-        <!-- OpenDocument Drawing Template -->
         <extension>otg</extension>
         <mime-type>application/vnd.oasis.opendocument.graphics-template</mime-type>
     </mime-mapping>
     <mime-mapping>
-        <!-- HTML Document Template -->
         <extension>oth</extension>
         <mime-type>application/vnd.oasis.opendocument.text-web</mime-type>
     </mime-mapping>
@@ -2944,17 +2932,14 @@
         <mime-type>application/vnd.oasis.opendocument.image-template</mime-type>
     </mime-mapping>
     <mime-mapping>
-        <!-- OpenDocument Presentation Template -->
         <extension>otp</extension>
         <mime-type>application/vnd.oasis.opendocument.presentation-template</mime-type>
     </mime-mapping>
     <mime-mapping>
-        <!-- OpenDocument Spreadsheet Template -->
         <extension>ots</extension>
         <mime-type>application/vnd.oasis.opendocument.spreadsheet-template</mime-type>
     </mime-mapping>
     <mime-mapping>
-        <!-- OpenDocument Text Template -->
         <extension>ott</extension>
         <mime-type>application/vnd.oasis.opendocument.text-template</mime-type>
     </mime-mapping>
@@ -3574,12 +3559,6 @@
         <extension>shf</extension>
         <mime-type>application/shf+xml</mime-type>
     </mime-mapping>
-    <!--
-    <mime-mapping>
-        <extension>shtml</extension>
-        <mime-type>text/x-server-parsed-html</mime-type>
-    </mime-mapping>
-    -->
     <mime-mapping>
         <extension>sid</extension>
         <mime-type>image/x-mrsid-image</mime-type>
@@ -4261,7 +4240,6 @@
         <mime-type>audio/x-ms-wax</mime-type>
     </mime-mapping>
     <mime-mapping>
-        <!-- Wireless Bitmap -->
         <extension>wbmp</extension>
         <mime-type>image/vnd.wap.wbmp</mime-type>
     </mime-mapping>
@@ -4326,22 +4304,18 @@
         <mime-type>application/x-msmetafile</mime-type>
     </mime-mapping>
     <mime-mapping>
-        <!-- WML Source -->
         <extension>wml</extension>
         <mime-type>text/vnd.wap.wml</mime-type>
     </mime-mapping>
     <mime-mapping>
-        <!-- Compiled WML -->
         <extension>wmlc</extension>
         <mime-type>application/vnd.wap.wmlc</mime-type>
     </mime-mapping>
     <mime-mapping>
-        <!-- WML Script Source -->
         <extension>wmls</extension>
         <mime-type>text/vnd.wap.wmlscript</mime-type>
     </mime-mapping>
     <mime-mapping>
-        <!-- Compiled WML Script -->
         <extension>wmlsc</extension>
         <mime-type>application/vnd.wap.wmlscriptc</mime-type>
     </mime-mapping>
@@ -4712,7 +4686,7 @@
     <mime-mapping>
         <extension>zmm</extension>
         <mime-type>application/vnd.handheld-entertainment+xml</mime-type>
-    </mime-mapping>
+    </mime-mapping>-->
 
   <!-- ==================== Default Welcome File List ===================== -->
   <!-- When a request URI refers to a directory, the default servlet looks  -->
@@ -4728,10 +4702,10 @@
   <!-- here, so be sure to include any of the default values that you wish  -->
   <!-- to use within your application.                                       -->
 
-    <welcome-file-list>
+    <!--<welcome-file-list>
         <welcome-file>index.html</welcome-file>
         <welcome-file>index.htm</welcome-file>
         <welcome-file>index.jsp</welcome-file>
-    </welcome-file-list>
+    </welcome-file-list>-->
 
 </web-app>

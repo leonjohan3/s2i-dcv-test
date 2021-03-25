@@ -13,3 +13,4 @@ var
 .s2i
 services
 LICENSE
+deployment-credential-vault-1.0.0-SNAPSHOT.war

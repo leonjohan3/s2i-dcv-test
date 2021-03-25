@@ -23,7 +23,7 @@ readonly DEBUG_LOGGING=1
 log "Running the assemble script..."
 
 umask u=rwx,g=,o=
-mv $TMPDIR/src/var $TMPDIR/src/etc $TMPDIR/src/service $HOME
+mv $TMPDIR/src/var $TMPDIR/src/etc $TMPDIR/src/service $TMPDIR/src/.keystore $HOME
 rm -rf $TMPDIR/src
 
 cd $CATALINA_BASE
@@ -45,7 +45,17 @@ for DI in conf mods sites ; do
 done
 
 # TODO - delete below
-cd $HOME/etc/tomcat9/Catalina/localhost
-ln -s /etc/tomcat9/Catalina/localhost/examples.xml
+#cd $HOME/etc/tomcat9/Catalina/localhost
+#ln -s /etc/tomcat9/Catalina/localhost/examples.xml
+
+if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
+
+    log "Restoring build artifacts..."
+    mv $TMPDIR/artifacts/opt/app-root/src/var/lib/tomcat9/webapps/dcv.war $HOME/var/lib/tomcat9/webapps
+
+else
+    curl -f -s -o $HOME/var/lib/tomcat9/webapps/dcv.war http://consolidate.mooo.com:8161/dcv/dcv.war
+fi
 
 chmod -R go-rwx $HOME
+chmod u-w $HOME/var/lib/tomcat9/webapps/dcv.war

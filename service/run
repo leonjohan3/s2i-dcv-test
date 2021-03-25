@@ -59,7 +59,8 @@ for DI in apache2 tomcat9 ; do
     fi
 done
 
-cd $CATALINA_HOME
+cd $HOME
+#cd $CATALINA_HOME
 
 #/usr/bin/java "$LOGGING_CONFIG" "$LOGGING_MANAGER" "$JAVA_OPTS" \
 /usr/bin/java -XshowSettings:vm "$LOGGING_CONFIG" "$LOGGING_MANAGER" "$JAVA_OPTS" \

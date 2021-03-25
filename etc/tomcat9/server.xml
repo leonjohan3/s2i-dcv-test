@@ -117,17 +117,14 @@
     <!--<Connector protocol="AJP/1.3"-->
     <!-- TODO secret and proxy name and port need to be env vars -->
     <Connector protocol="org.apache.coyote.ajp.AjpNio2Protocol"
-               useAprConnector="true"
-               useOpenSSL="false"
                secret="secret"
                address="127.0.0.1"
                port="8009"
                acceptorThreadCount="2"
                connectionTimeout="10000"
                tomcatAuthentication="false"
-               useCaches="true"
-               proxyName="tntdb"
-               proxyPort="8000"
+               proxyName="integrate.zapto.org"
+               proxyPort="80"
                redirectPort="8443" />
     <!--
     -->
