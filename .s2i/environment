@@ -6,4 +6,4 @@ ARTIFACT_URL=http://consolidate.mooo.com:8161/deployment-credential-vault-1.0.0-
 KEYSTORE_PASSWORD=.keystore
 DCV_KEYSTORE=/opt/app-root/src/var/log/keystore
 LOGGING_FILE_NAME=/opt/app-root/src/var/log/dcv.log
-LOGGING_LEVEL_ORG_DCV=debug
+LOGGING_LEVEL_ORG_DCV=info

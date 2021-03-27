@@ -12,7 +12,7 @@ set -e -o pipefail
 # Variables flagged as local readonly will not terminate the script if they are set by command substitution.
 
 umask u=rwx,g=r,o=
-APACHE_CONFDIR=$HOME/etc/apache2
+export APACHE_CONFDIR=$HOME/etc/apache2
 APACHE_ENVVARS="$APACHE_CONFDIR/envvars"
 
 if test -r $APACHE_ENVVARS; then
@@ -62,13 +62,13 @@ done
 cd $HOME
 #cd $CATALINA_HOME
 
-#/usr/bin/java "$LOGGING_CONFIG" "$LOGGING_MANAGER" "$JAVA_OPTS" \
 /usr/bin/java -XshowSettings:vm "$LOGGING_CONFIG" "$LOGGING_MANAGER" "$JAVA_OPTS" \
      -classpath "$CLASSPATH" \
      -Dcatalina.base="$CATALINA_BASE" \
      -Dcatalina.home="$CATALINA_HOME" \
      -Djava.io.tmpdir="$CATALINA_TMPDIR" \
      org.apache.catalina.startup.Bootstrap start &
+
 #      org.apache.catalina.startup.Bootstrap start >> "$CATALINA_OUT" 2>&1 
 
 exec /usr/sbin/apache2 -d "$APACHE_CONFDIR" "$APACHE_ARGUMENTS"

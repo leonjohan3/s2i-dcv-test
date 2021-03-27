@@ -10,6 +10,7 @@ LABEL maintainer="leonjohan3@gmail.com" \
 # see https://askubuntu.com/questions/541055/installing-packages-without-docs
 COPY 01_nodoc /etc/dpkg/dpkg.cfg.d
 COPY 99synaptics /etc/apt/apt.conf.d
+COPY dbmmanage /usr/local/bin
 
 RUN export DEBIAN_FRONTEND=noninteractive \
     && ln -nfs /usr/share/zoneinfo/Australia/Sydney /etc/localtime \
