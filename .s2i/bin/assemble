@@ -54,7 +54,7 @@ if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
     mv $TMPDIR/artifacts/opt/app-root/src/var/lib/tomcat9/webapps/dcv.war $HOME/var/lib/tomcat9/webapps
 
 else
-    curl -f -s -o $HOME/var/lib/tomcat9/webapps/dcv.war http://consolidate.mooo.com:8161/dcv/dcv.war
+    curl -f -s -o $HOME/var/lib/tomcat9/webapps/dcv.war $ARTIFACT_URL
 fi
 
 chmod -R go-rwx $HOME

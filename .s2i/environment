@@ -2,8 +2,10 @@ TMPDIR=/tmp
 
 CATALINA_BASE=/opt/app-root/src/var/lib/tomcat9
 
-ARTIFACT_URL=http://consolidate.mooo.com:8161/deployment-credential-vault-1.0.0-SNAPSHOT.war
+ARTIFACT_URL=http://consolidate.mooo.com:8161/dcv/dcv.war
 KEYSTORE_PASSWORD=.keystore
 DCV_KEYSTORE=/opt/app-root/src/var/log/keystore
 LOGGING_FILE_NAME=/opt/app-root/src/var/log/dcv.log
 LOGGING_LEVEL_ORG_DCV=info
+
+MANAGEMENT_ENDPOINTS_WEB_CORS_ALLOWED_ORIGINS=http://integrate.zapto.org
