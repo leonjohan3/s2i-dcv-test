@@ -34,14 +34,15 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && unlink /usr/share/tomcat9/lib/catalina-storeconfig.jar \
     && unlink /usr/share/tomcat9/lib/catalina-ha.jar \
     && unlink /usr/share/tomcat9/lib/catalina-ant.jar \
-    && unlink /usr/share/tomcat9/lib/jasper-el.jar \
     && unlink /usr/share/tomcat9/lib/jasper.jar \
-    && unlink /usr/share/tomcat9/lib/el-api.jar \
-    && unlink /usr/share/tomcat9/lib/jsp-api.jar \
     && unlink /usr/share/tomcat9/lib/tomcat-i18n-es.jar \
     && unlink /usr/share/tomcat9/lib/tomcat-i18n-fr.jar \
     && unlink /usr/share/tomcat9/lib/tomcat-i18n-ja.jar \
     && unlink /usr/share/tomcat9/lib/tomcat-i18n-ru.jar
+
+#    && unlink /usr/share/tomcat9/lib/jasper-el.jar \
+#    && unlink /usr/share/tomcat9/lib/el-api.jar \
+#    && unlink /usr/share/tomcat9/lib/jsp-api.jar \
     
 ENV LANG=en_AU.UTF-8
 ARG APP_HOME=/opt/app-root/src
@@ -49,6 +50,7 @@ ARG APP_HOME=/opt/app-root/src
 # Create the user that will run the application
 RUN update-locale LANG=en_AU.UTF-8 \
     && mkdir /opt/app-root \
+    && chmod g+w /usr/share/tomcat9/lib \
     && useradd -G adm -c "Default Application User" -d ${APP_HOME} -g root -m -s /usr/sbin/nologin -u 11001 default
 
 COPY dot_bash_aliases ${APP_HOME}/.bash_aliases

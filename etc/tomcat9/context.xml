@@ -26,6 +26,17 @@
 
     <!-- Uncomment this to disable session persistence across Tomcat restarts -->
     <!--
-    <Manager pathname="" />
     -->
+    <Manager pathname="" />
+    
+    <!-- <Resource name="jdbc/test"
+            auth="Container"
+            type="javax.sql.DataSource"
+            username="sa"
+            password=""
+            driverClassName="org.h2.Driver"
+            url="jdbc:h2:tcp://172.17.0.1/~/h2-data/test"
+            maxTotal="8"
+            maxIdle="4"/> -->
+
 </Context>

@@ -23,7 +23,7 @@ readonly DEBUG_LOGGING=1
 log "Running the assemble script..."
 
 umask u=rwx,g=,o=
-mv $TMPDIR/src/var $TMPDIR/src/etc $TMPDIR/src/service $TMPDIR/src/.keystore $HOME
+mv $TMPDIR/src/var $TMPDIR/src/etc $TMPDIR/src/service $TMPDIR/src/.keystore $TMPDIR/src/tomcat-lib-extra  $HOME
 rm -rf $TMPDIR/src
 
 cd $CATALINA_BASE
@@ -42,6 +42,12 @@ for DI in conf mods sites ; do
             ln -s ../${DI}-available/$FI
         fi
     done
+done
+
+cd $HOME/tomcat-lib-extra
+
+for FI in *.jar ; do
+    ln -s $HOME/tomcat-lib-extra/$FI /usr/share/tomcat9/lib/$FI
 done
 
 # TODO - delete below

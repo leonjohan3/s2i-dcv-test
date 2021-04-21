@@ -23,7 +23,7 @@ JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 CATALINA_HOME=/usr/share/tomcat9
 CATALINA_TMPDIR=$TMPDIR
 #JAVA_OPTS="-Xmx256m -Djava.awt.headless=true"
-JAVA_OPTS="-Djava.awt.headless=true"
+JAVA_OPTS="-Djava.awt.headless=true -Dorg.slf4j.simpleLogger.showDateTime=true"
 CATALINA_OPTS=""
 
 # Ensure that any user defined CLASSPATH variables are not used on startup,
@@ -62,33 +62,35 @@ done
 cd $HOME
 #cd $CATALINA_HOME
 
-/usr/bin/java -XshowSettings:vm "$LOGGING_CONFIG" "$LOGGING_MANAGER" "$JAVA_OPTS" \
+/usr/bin/java -XshowSettings:vm "$LOGGING_CONFIG" "$LOGGING_MANAGER" \
               -classpath "$CLASSPATH" \
               -Dcatalina.base="$CATALINA_BASE" \
               -Dcatalina.home="$CATALINA_HOME" \
               -Djava.io.tmpdir="$CATALINA_TMPDIR" \
+               $JAVA_OPTS \
               org.apache.catalina.startup.Bootstrap start &
 
 #      org.apache.catalina.startup.Bootstrap start >> "$CATALINA_OUT" 2>&1 
 
-readonly WAIT_FOR_CERT_KEY_FILE_SECONDS=180
-readonly CERT_KEY_FILENAME=$TMPDIR/key.pem.b64
-
-for ((COUNTER = 1 ; COUNTER <= $WAIT_FOR_CERT_KEY_FILE_SECONDS ; COUNTER += 1)) ; do
-    if [ -f $CERT_KEY_FILENAME ] ; then
-        sleep 1
-        base64 --wrap=0 -d < $CERT_KEY_FILENAME > $HOME/etc/apache2/key.pem
-        break
-    else
-        sleep 1
-    fi
-done
-
-if [ -f $CERT_KEY_FILENAME ] ; then
-    rm $CERT_KEY_FILENAME
-else
-    echo "Error, no cert key available"
-    exit 1
-fi
+# TODO - uncomment below
+#readonly WAIT_FOR_CERT_KEY_FILE_SECONDS=180
+#readonly CERT_KEY_FILENAME=$TMPDIR/key.pem.b64
+#
+#for ((COUNTER = 1 ; COUNTER <= $WAIT_FOR_CERT_KEY_FILE_SECONDS ; COUNTER += 1)) ; do
+#    if [ -f $CERT_KEY_FILENAME ] ; then
+#        sleep 1
+#        base64 --wrap=0 -d < $CERT_KEY_FILENAME > $HOME/etc/apache2/key.pem
+#        break
+#    else
+#        sleep 1
+#    fi
+#done
+#
+#if [ -f $CERT_KEY_FILENAME ] ; then
+#    rm $CERT_KEY_FILENAME
+#else
+#    echo "Error, no cert key available"
+#    exit 1
+#fi
 
 exec /usr/sbin/apache2 -d "$APACHE_CONFDIR" "$APACHE_ARGUMENTS"
