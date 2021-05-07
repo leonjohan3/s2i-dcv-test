@@ -17,14 +17,15 @@ function log {
         echo "$NOW $1"
     fi
 }
-set +x
+#set +x
 readonly DEBUG_LOGGING=1
 
 log "Running the assemble script..."
+#id
 
 umask u=rwx,g=,o=
-mv $TMPDIR/src/var $TMPDIR/src/etc $TMPDIR/src/service $TMPDIR/src/.keystore $TMPDIR/src/tomcat-lib-extra  $HOME
-rm -rf $TMPDIR/src
+mv $TMPDIR/src/var $TMPDIR/src/etc $TMPDIR/src/services $TMPDIR/src/.keystore $TMPDIR/src/tomcat-lib-extra $TMPDIR/src/empty_mapfile.db $TMPDIR/src/logback.xml  $HOME
+#mv $TMPDIR/src/var $TMPDIR/src/etc $TMPDIR/src/services $TMPDIR/src/.keystore $TMPDIR/src/tomcat-lib-extra $TMPDIR/src/logback.xml  $HOME
 
 cd $CATALINA_BASE
 ln -s ../../../etc/tomcat9 conf
@@ -60,8 +61,18 @@ if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
     mv $TMPDIR/artifacts/opt/app-root/src/var/lib/tomcat9/webapps/dcv.war $HOME/var/lib/tomcat9/webapps
 
 else
-    curl -f -s -o $HOME/var/lib/tomcat9/webapps/dcv.war $ARTIFACT_URL
+    if [ -f $TMPDIR/src/dcv.war ] ; then
+        mv $TMPDIR/src/dcv.war $HOME/var/lib/tomcat9/webapps
+    else
+        curl -f -s -o $HOME/var/lib/tomcat9/webapps/dcv.war $ARTIFACT_URL
+    fi
 fi
 
 chmod -R go-rwx $HOME
 chmod u-w $HOME/var/lib/tomcat9/webapps/dcv.war
+
+if [ -r $TMPDIR/src/key.pem ] ; then
+    mv $TMPDIR/src/key.pem $HOME
+fi
+
+rm -rf $TMPDIR/src

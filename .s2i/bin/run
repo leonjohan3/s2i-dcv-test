@@ -12,5 +12,82 @@ set -ue -o pipefail
 # Variables flagged as local readonly will not terminate the script if they are set by command substitution.
 
 #/usr/bin/runsv $HOME/services/apache2 &
-exec /usr/bin/runsv $HOME/service
+#exec /usr/bin/runsv $HOME/service
 #exec /usr/bin/runsvdir $HOME/services
+
+umask u=rwx,g=rx,o=
+
+for DI in apache2 tomcat9 ; do
+    if [ ! -d $HOME/var/log/$DI ] ; then
+        mkdir $HOME/var/log/$DI
+    fi
+done
+
+#if [ ! -d $HOME/db ] ; then
+#    mkdir $HOME/db
+#fi
+
+if [ -f $HOME/empty_mapfile.db ] ; then
+    if [ ! -f $HOME/db/mapfile.db ] ; then
+        mv $HOME/empty_mapfile.db $HOME/db/mapfile.db
+        chmod -R go-rwx $HOME/db/*
+    fi
+fi
+
+#function createKeyDotDer() {
+#    openssl pkcs8 -topk8 -inform PEM -outform DER -in $HOME/etc/apache2/key.pem -nocrypt > $HOME/etc/apache2/key.der
+#    chmod g-rwx $HOME/etc/apache2/key.*
+#}
+
+#if [ -r $HOME/key.pem ] ; then
+#    mv $HOME/key.pem $HOME/etc/apache2
+#    createKeyDotDer
+#else
+#
+#    readonly WAIT_FOR_CERT_KEY_FILE_SECONDS=60
+#    readonly CERT_KEY_PATH=$TMPDIR/$CERT_KEY_FILENAME
+#
+#    for ((COUNTER = 1 ; COUNTER <= $WAIT_FOR_CERT_KEY_FILE_SECONDS ; COUNTER += 1)) ; do
+#        if [ -r $CERT_KEY_PATH ] ; then
+#            sleep 1
+#            base64 --wrap=0 -d < $CERT_KEY_PATH > $HOME/etc/apache2/key.pem
+#            createKeyDotDer
+#            break
+#        else
+#            sleep 1
+#        fi
+#    done
+#
+#    if [ -f $CERT_KEY_PATH ] ; then
+#        rm $CERT_KEY_PATH
+#    else
+#        echo "Error, no cert key available"
+#        exit 1
+#    fi
+#fi
+#
+#chmod -R o-rwx $HOME
+#
+ALL_PROCESS_IDS=""
+
+for DI in $HOME/services/* ; do
+    if [ -d $DI ] ; then
+        /usr/bin/runsv $DI &
+        ALL_PROCESS_IDS="${ALL_PROCESS_IDS} $!"
+    fi
+done
+
+function stop() {
+
+    for DI in $HOME/services/* ; do
+        if [ -d $DI ] ; then
+            /usr/bin/sv exit $DI
+        fi
+    done
+
+    eval "wait $ALL_PROCESS_IDS"
+    exit 0
+}
+
+trap stop SIGTERM
+wait

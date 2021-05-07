@@ -6,24 +6,28 @@
 # non-zero in a pipeline of commands.
 set -e -o pipefail
 
-# This script starts Wiremock Standalone
+# This script starts tomcat9
 
 # Some notes on bash scripting:
 # Variables flagged as local readonly will not terminate the script if they are set by command substitution.
 
-umask u=rwx,g=r,o=
-export APACHE_CONFDIR=$HOME/etc/apache2
-APACHE_ENVVARS="$APACHE_CONFDIR/envvars"
-
-if test -r $APACHE_ENVVARS; then
-    . $APACHE_ENVVARS
-fi
+umask u=rwx,g=rx,o=
+#export APACHE_CONFDIR=$HOME/etc/apache2
+#APACHE_ENVVARS="$APACHE_CONFDIR/envvars"
+#
+#if test -r $APACHE_ENVVARS; then
+#    . $APACHE_ENVVARS
+#fi
 
 JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 CATALINA_HOME=/usr/share/tomcat9
 CATALINA_TMPDIR=$TMPDIR
 #JAVA_OPTS="-Xmx256m -Djava.awt.headless=true"
-JAVA_OPTS="-Djava.awt.headless=true -Dorg.slf4j.simpleLogger.showDateTime=true"
+#JAVA_OPTS="-Djava.awt.headless=true -Dorg.slf4j.simpleLogger.showDateTime=true"
+# TODO - change DKSP_END before release
+JAVA_OPTS="-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/opt/app-root/src/var/log -XX:+UseG1GC -XX:+PrintCommandLineFlags -Xms144m -Xmx144m -Djava.awt.headless=true -DKSP_END=ore"
+#  -Dorg.slf4j.simpleLogger.showDateTime=true -Dorg.slf4j.simpleLogger.defaultLogLevel=DEBUG
+#JAVA_OPTS="-XX:+PrintCommandLineFlags -Xms160m -Xmx160m -Djava.awt.headless=true -Dorg.slf4j.simpleLogger.showDateTime=true"
 CATALINA_OPTS=""
 
 # Ensure that any user defined CLASSPATH variables are not used on startup,
@@ -53,32 +57,31 @@ JDK_JAVA_OPTIONS="$JDK_JAVA_OPTIONS --add-opens=java.base/java.io=ALL-UNNAMED"
 JDK_JAVA_OPTIONS="$JDK_JAVA_OPTIONS --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED"
 export JDK_JAVA_OPTIONS
 
-for DI in apache2 tomcat9 ; do
-    if [ ! -d $HOME/var/log/$DI ] ; then
-        mkdir $HOME/var/log/$DI
-    fi
-done
+#for DI in tomcat9 ; do
+#    if [ ! -d $HOME/var/log/$DI ] ; then
+#        mkdir $HOME/var/log/$DI
+#    fi
+#done
 
 cd $HOME
 #cd $CATALINA_HOME
 
-/usr/bin/java -XshowSettings:vm "$LOGGING_CONFIG" "$LOGGING_MANAGER" \
+exec /usr/bin/java -XshowSettings:vm "$LOGGING_CONFIG" "$LOGGING_MANAGER" \
               -classpath "$CLASSPATH" \
               -Dcatalina.base="$CATALINA_BASE" \
               -Dcatalina.home="$CATALINA_HOME" \
               -Djava.io.tmpdir="$CATALINA_TMPDIR" \
                $JAVA_OPTS \
-              org.apache.catalina.startup.Bootstrap start &
+              org.apache.catalina.startup.Bootstrap start
 
 #      org.apache.catalina.startup.Bootstrap start >> "$CATALINA_OUT" 2>&1 
 
-# TODO - uncomment below
-#readonly WAIT_FOR_CERT_KEY_FILE_SECONDS=180
+#readonly WAIT_FOR_CERT_KEY_FILE_SECONDS=60
 #readonly CERT_KEY_FILENAME=$TMPDIR/key.pem.b64
 #
 #for ((COUNTER = 1 ; COUNTER <= $WAIT_FOR_CERT_KEY_FILE_SECONDS ; COUNTER += 1)) ; do
-#    if [ -f $CERT_KEY_FILENAME ] ; then
-#        sleep 1
+#    if [ -r $CERT_KEY_FILENAME ] ; then
+#        sleep 3
 #        base64 --wrap=0 -d < $CERT_KEY_FILENAME > $HOME/etc/apache2/key.pem
 #        break
 #    else
@@ -93,4 +96,4 @@ cd $HOME
 #    exit 1
 #fi
 
-exec /usr/sbin/apache2 -d "$APACHE_CONFDIR" "$APACHE_ARGUMENTS"
+#exec /usr/sbin/apache2 -d "$APACHE_CONFDIR" "$APACHE_ARGUMENTS"
