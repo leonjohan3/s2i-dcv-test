@@ -5,8 +5,8 @@ S2I_IMAGE_NAME = s2i-dcv-test
 build:
 	#git diff --quiet
 	#test -z "$$(git status --porcelain)" || exit 1
-	#s2i build . $(IMAGE_NAME) $(S2I_IMAGE_NAME) --incremental=false
-	s2i build . $(IMAGE_NAME) $(S2I_IMAGE_NAME) --incremental=true
+	s2i build . $(IMAGE_NAME) $(S2I_IMAGE_NAME) --incremental=false
+	#s2i build . $(IMAGE_NAME) $(S2I_IMAGE_NAME) --incremental=true
 
 .PHONY: deploy
 deploy: build
