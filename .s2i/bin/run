@@ -29,6 +29,11 @@ done
 
 if [ -f $HOME/empty_mapfile.db ] ; then
     if [ ! -f $HOME/db/mapfile.db ] ; then
+        
+        if [ ! -d $HOME/db ] ; then
+            mkdir $HOME/db
+        fi
+        
         mv $HOME/empty_mapfile.db $HOME/db/mapfile.db
         chmod -R go-rwx $HOME/db/*
     fi

@@ -17,7 +17,7 @@ function log {
         echo "$NOW $1"
     fi
 }
-#set +x
+#set -x
 readonly DEBUG_LOGGING=1
 
 log "Running the assemble script..."
